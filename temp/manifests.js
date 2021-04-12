@@ -725,11 +725,57 @@ var MANIFESTS_ARRAY = [
         },
         "EnhancedPowerAppsWebPartStrings": {
           "defaultPath": "lib/webparts/enhancedPowerApps/loc/en-us.js",
-          "type": "localizedPath"
+          "type": "localizedPath",
+          "paths": {}
         },
         "PropertyControlStrings": {
           "defaultPath": "node_modules/@pnp/spfx-property-controls/lib/loc/en-us.js",
-          "type": "localizedPath"
+          "type": "localizedPath",
+          "paths": {
+            "en-US": "node_modules/@pnp/spfx-property-controls/lib/loc/en-us.js",
+            "bn": "node_modules/@pnp/spfx-property-controls/lib/loc/en-us.js",
+            "chr": "node_modules/@pnp/spfx-property-controls/lib/loc/en-us.js",
+            "dv": "node_modules/@pnp/spfx-property-controls/lib/loc/en-us.js",
+            "div": "node_modules/@pnp/spfx-property-controls/lib/loc/en-us.js",
+            "en": "node_modules/@pnp/spfx-property-controls/lib/loc/en-us.js",
+            "fil": "node_modules/@pnp/spfx-property-controls/lib/loc/en-us.js",
+            "haw": "node_modules/@pnp/spfx-property-controls/lib/loc/en-us.js",
+            "iu": "node_modules/@pnp/spfx-property-controls/lib/loc/en-us.js",
+            "lo": "node_modules/@pnp/spfx-property-controls/lib/loc/en-us.js",
+            "moh": "node_modules/@pnp/spfx-property-controls/lib/loc/en-us.js",
+            "fr-FR": "node_modules/@pnp/spfx-property-controls/lib/loc/fr-fr.js",
+            "gsw": "node_modules/@pnp/spfx-property-controls/lib/loc/fr-fr.js",
+            "br": "node_modules/@pnp/spfx-property-controls/lib/loc/fr-fr.js",
+            "tzm-Tfng": "node_modules/@pnp/spfx-property-controls/lib/loc/fr-fr.js",
+            "co": "node_modules/@pnp/spfx-property-controls/lib/loc/fr-fr.js",
+            "fr": "node_modules/@pnp/spfx-property-controls/lib/loc/fr-fr.js",
+            "ff": "node_modules/@pnp/spfx-property-controls/lib/loc/fr-fr.js",
+            "lb": "node_modules/@pnp/spfx-property-controls/lib/loc/fr-fr.js",
+            "mg": "node_modules/@pnp/spfx-property-controls/lib/loc/fr-fr.js",
+            "oc": "node_modules/@pnp/spfx-property-controls/lib/loc/fr-fr.js",
+            "zgh": "node_modules/@pnp/spfx-property-controls/lib/loc/fr-fr.js",
+            "wo": "node_modules/@pnp/spfx-property-controls/lib/loc/fr-fr.js",
+            "nl-NL": "node_modules/@pnp/spfx-property-controls/lib/loc/nl-nl.js",
+            "nl": "node_modules/@pnp/spfx-property-controls/lib/loc/nl-nl.js",
+            "fy": "node_modules/@pnp/spfx-property-controls/lib/loc/nl-nl.js",
+            "no": "node_modules/@pnp/spfx-property-controls/lib/loc/no.js",
+            "ru-RU": "node_modules/@pnp/spfx-property-controls/lib/loc/ru-ru.js",
+            "ru": "node_modules/@pnp/spfx-property-controls/lib/loc/ru-ru.js",
+            "ba": "node_modules/@pnp/spfx-property-controls/lib/loc/ru-ru.js",
+            "be": "node_modules/@pnp/spfx-property-controls/lib/loc/ru-ru.js",
+            "ky": "node_modules/@pnp/spfx-property-controls/lib/loc/ru-ru.js",
+            "mn": "node_modules/@pnp/spfx-property-controls/lib/loc/ru-ru.js",
+            "sah": "node_modules/@pnp/spfx-property-controls/lib/loc/ru-ru.js",
+            "tg": "node_modules/@pnp/spfx-property-controls/lib/loc/ru-ru.js",
+            "tt": "node_modules/@pnp/spfx-property-controls/lib/loc/ru-ru.js",
+            "tk": "node_modules/@pnp/spfx-property-controls/lib/loc/ru-ru.js",
+            "zh-CN": "node_modules/@pnp/spfx-property-controls/lib/loc/zh-cn.js",
+            "zh": "node_modules/@pnp/spfx-property-controls/lib/loc/zh-cn.js",
+            "mn-Mong": "node_modules/@pnp/spfx-property-controls/lib/loc/zh-cn.js",
+            "bo": "node_modules/@pnp/spfx-property-controls/lib/loc/zh-cn.js",
+            "ug": "node_modules/@pnp/spfx-property-controls/lib/loc/zh-cn.js",
+            "ii": "node_modules/@pnp/spfx-property-controls/lib/loc/zh-cn.js"
+          }
         },
         "@microsoft/sp-property-pane": {
           "type": "component",
@@ -760,13 +806,13 @@ var MANIFESTS_ARRAY = [
           "type": "component",
           "version": "16.8.5",
           "id": "0d910c1c-13b9-4e1c-9aa4-b008c5e42d7d",
-          "failoverPath": "../../users/hugoa/onedrive/github/react-enhanced-powerapps/node_modules/react/dist/react.js"
+          "failoverPath": "node_modules/react/dist/react.js"
         },
         "react-dom": {
           "type": "component",
           "version": "16.8.5",
           "id": "aa0a46ec-1505-43cd-a44a-93f3a5aa460a",
-          "failoverPath": "../../users/hugoa/onedrive/github/react-enhanced-powerapps/node_modules/react-dom/dist/react-dom.js"
+          "failoverPath": "node_modules/react-dom/dist/react-dom.js"
         }
       }
     }

@@ -10,6 +10,8 @@ root = true
 # change these settings to your own preference
 indent_style = space
 indent_size = 2
+quote_type = single
+max_line_length = 100
 
 # we recommend you to keep these unchanged
 end_of_line = lf

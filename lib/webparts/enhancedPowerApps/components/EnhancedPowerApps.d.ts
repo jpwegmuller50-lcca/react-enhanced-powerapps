@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { IEnhancedPowerAppsProps } from './IEnhancedPowerAppsProps';
-import { IEnhancedPowerAppsState } from './IEnhancedPowerAppsState';
+import * as React from "react";
+import { IEnhancedPowerAppsProps } from "./IEnhancedPowerAppsProps";
+import { IEnhancedPowerAppsState } from "./IEnhancedPowerAppsState";
 export default class EnhancedPowerApps extends React.Component<IEnhancedPowerAppsProps, IEnhancedPowerAppsState> {
     render(): React.ReactElement<IEnhancedPowerAppsProps>;
 }
