@@ -322,9 +322,12 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
 
   protected get propertiesMetadata(): IWebPartPropertiesMetadata {
     return {
-      // Specify the web part properties data type to allow the address
+      // Specify the web part properties data type to allow the
       // information to be serialized by the SharePoint Framework.
       dynamicProp: {
+        dynamicPropertyType: 'string'
+      },
+      dynamicProp2: {
         dynamicPropertyType: 'string'
       }
     };
@@ -332,7 +335,7 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
 
   private _onConfigure = (): void => {
     this.context.propertyPane.open();
-  };
+  }
 
   /**
    * Update the current theme variant reference and re-render.

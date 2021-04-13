@@ -40,15 +40,19 @@ export default class EnhancedPowerApps extends React.Component<
 
     const { semanticColors }: IReadonlyTheme = themeVariant;
 
-    // process any dynamic properties
+    /** process any dynamic properties */
     let appUrl: string = '';
+    let propIsUrl: boolean = false;
+    let prop2IsUrl: boolean = false;
 
     // set app url by checking to see if either dynamic property is an app url
-    const urlRoot: string = 'https://apps.powerapps.com/play/';
-    if (useDynamicProp && dynamicProp.substr(0, 32) === urlRoot) {
-      appUrl = encodeURIComponent(dynamicProp);
-    } else if (useDynamicProp2 && dynamicProp2.substr(0, 32) === urlRoot) {
-      appUrl = encodeURIComponent(dynamicProp2);
+    const appUrlRoot: string = 'https://apps.powerapps.com/play/';
+    if (useDynamicProp && dynamicProp !== undefined && dynamicProp.substr(0, 32) === appUrlRoot) {
+      appUrl = dynamicProp;
+      propIsUrl = true;
+    } else if (useDynamicProp2 && dynamicProp2 !== undefined && dynamicProp2.substr(0, 32) === appUrlRoot) {
+      appUrl = dynamicProp2;
+      prop2IsUrl = true;
     } else {
       // We can take an app id or a full link. We'll assume (for now) that people are passing a valid app URL
       // would LOVE to find an API to retrieve list of valid apps
@@ -59,8 +63,12 @@ export default class EnhancedPowerApps extends React.Component<
     }
 
     const dynamicPropValue: string =
-      useDynamicProp && dynamicProp !== undefined
+      useDynamicProp && !propIsUrl && dynamicProp !== undefined
         ? `&${encodeURIComponent(dynamicPropName)}=${encodeURIComponent(dynamicProp)}`
+        : '';
+    const dynamicProp2Value: string =
+      useDynamicProp2 && !prop2IsUrl && dynamicProp2 !== undefined
+        ? `&${encodeURIComponent(dynamicPropName2)}=${encodeURIComponent(dynamicProp2)}`
         : '';
 
     // Build the portion of the URL where we're passing theme colors
@@ -78,7 +86,7 @@ export default class EnhancedPowerApps extends React.Component<
     }
 
     // Build the frame url
-    const frameUrl: string = `${appUrl}?source=SPClient-EnhancedPowerAppsWebPart&amp;locale=${locale}&amp;enableOnBehalfOf=true&amp;authMode=onbehalfof&amp;hideNavBar=true&amp;${dynamicPropValue}${themeParams}&locale=${locale}`;
+    const frameUrl: string = `${appUrl}?source=SPClient-EnhancedPowerAppsWebPart&amp;locale=${locale}&amp;enableOnBehalfOf=true&amp;authMode=onbehalfof&amp;hideNavBar=true&amp;${dynamicPropValue}${dynamicProp2Value}${themeParams}`;
 
     console.log('URL', frameUrl);
 
