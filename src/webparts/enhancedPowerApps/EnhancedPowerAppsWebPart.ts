@@ -8,6 +8,7 @@ import {
   PropertyPaneLabel,
   PropertyPaneChoiceGroup
 } from '@microsoft/sp-property-pane';
+import { PropertyPaneWebPartInformation } from '@pnp/spfx-property-controls/lib/PropertyPaneWebPartInformation';
 
 import * as strings from 'EnhancedPowerAppsWebPartStrings';
 import EnhancedPowerApps from './components/EnhancedPowerApps';
@@ -31,11 +32,7 @@ import {
 /**
  * Use this for theme awareness
  */
-import {
-  ThemeProvider,
-  ThemeChangedEventArgs,
-  IReadonlyTheme
-} from '@microsoft/sp-component-base';
+import { ThemeProvider, ThemeChangedEventArgs, IReadonlyTheme } from '@microsoft/sp-component-base';
 
 /**
  * Use the multi-select for large checklists
@@ -49,16 +46,22 @@ import { PropertyPaneHTML } from '../../controls/PropertyPaneHTML/PropertyPaneHT
  */
 import { Text } from '@microsoft/sp-core-library';
 
+// Import package version
+const packageSolution: any = require('../../../config/package-solution.json');
+
 export interface IEnhancedPowerAppsWebPartProps {
   dynamicProp: DynamicProperty<string>;
   appWebLink: string;
   useDynamicProp: boolean;
   dynamicPropName: string;
+  useDynamicProp2: boolean;
+  dynamicProp2: DynamicProperty<string>;
+  dynamicPropName2: string;
   border: boolean;
-  layout: 'FixedHeight'|'AspectRatio';
+  layout: 'FixedHeight' | 'AspectRatio';
   height: number;
   width: number;
-  aspectratio: '16:9'|'3:2'|'16:10'|'4:3'|'Custom';
+  aspectratio: '16:9' | '3:2' | '16:10' | '4:3' | 'Custom';
   themeValues: string[];
 }
 
@@ -82,6 +85,8 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
   public render(): void {
     // Context variables and dynamic properties
     const dynamicProp: string | undefined = this.properties.dynamicProp.tryGetValue();
+    const dynamicProp2: string | undefined = this.properties.dynamicProp2.tryGetValue();
+
     const locale: string = this.context.pageContext.cultureInfo.currentCultureName;
 
     // Get the client width. This is how we'll calculate the aspect ratio and resize the iframe
@@ -90,24 +95,24 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
     // Get the aspect width and height based on aspect ratio for the web part
     let aspectWidth: number;
     let aspectHeight: number;
-    switch(this.properties.aspectratio) {
-      case "16:10":
+    switch (this.properties.aspectratio) {
+      case '16:10':
         aspectWidth = 16;
         aspectHeight = 10;
         break;
-      case "16:9":
+      case '16:9':
         aspectWidth = 16;
         aspectHeight = 9;
         break;
-      case "3:2":
+      case '3:2':
         aspectWidth = 3;
         aspectHeight = 2;
         break;
-      case "4:3":
+      case '4:3':
         aspectWidth = 4;
         aspectHeight = 3;
         break;
-      case "Custom":
+      case 'Custom':
         // Custom aspects just use the width and height properties
         aspectWidth = this.properties.width;
         aspectHeight = this.properties.height;
@@ -115,9 +120,10 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
 
     // If we're using fixed height, we pass the height and don't resize, otherwise we
     // calculate the height based on the web part's width and selected aspect ratio
-    const clientHeight: number = this.properties.layout === 'FixedHeight' ?
-      this.properties.height :
-      clientWidth * (aspectHeight/aspectWidth);
+    const clientHeight: number =
+      this.properties.layout === 'FixedHeight'
+        ? this.properties.height
+        : clientWidth * (aspectHeight / aspectWidth);
 
     const element: React.ReactElement<IEnhancedPowerAppsProps> = React.createElement(
       EnhancedPowerApps,
@@ -126,6 +132,9 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
         dynamicProp: dynamicProp,
         useDynamicProp: this.properties.useDynamicProp,
         dynamicPropName: this.properties.dynamicPropName,
+        dynamicProp2: dynamicProp2,
+        useDynamicProp2: this.properties.useDynamicProp2,
+        dynamicPropName2: this.properties.dynamicPropName2,
         onConfigure: this._onConfigure,
         appWebLink: this.properties.appWebLink,
         width: clientWidth,
@@ -191,40 +200,46 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
                     }
                   ]
                 }),
-                this.properties.layout === "FixedHeight" && PropertyPaneTextField('height', {
-                  label: strings.HeightFieldLabel
-                }),
-                this.properties.layout === "AspectRatio" && PropertyPaneChoiceGroup('aspectratio', {
-                  label: strings.AspectRatioFieldLabel,
-                  options: [
-                    {
-                      key: '16:9',
-                      text: '16:9',
-                    },
-                    {
-                      key: '3:2',
-                      text: '3:2',
-                    },
-                    {
-                      key: '16:10',
-                      text: '16:10',
-                    },
-                    {
-                      key: '4:3',
-                      text: '4:3',
-                    },
-                    {
-                      key: 'Custom',
-                      text: strings.AspectRatioCustomOption,
-                    }
-                  ]
-                }),
-                this.properties.layout === "AspectRatio" && this.properties.aspectratio === "Custom" && PropertyPaneTextField('width', {
-                  label: strings.WidthFieldLabel,
-                }),
-                this.properties.layout === "AspectRatio" && this.properties.aspectratio === "Custom" && PropertyPaneTextField('height', {
-                  label: strings.HeightFieldLabel,
-                }),
+                this.properties.layout === 'FixedHeight' &&
+                  PropertyPaneTextField('height', {
+                    label: strings.HeightFieldLabel
+                  }),
+                this.properties.layout === 'AspectRatio' &&
+                  PropertyPaneChoiceGroup('aspectratio', {
+                    label: strings.AspectRatioFieldLabel,
+                    options: [
+                      {
+                        key: '16:9',
+                        text: '16:9'
+                      },
+                      {
+                        key: '3:2',
+                        text: '3:2'
+                      },
+                      {
+                        key: '16:10',
+                        text: '16:10'
+                      },
+                      {
+                        key: '4:3',
+                        text: '4:3'
+                      },
+                      {
+                        key: 'Custom',
+                        text: strings.AspectRatioCustomOption
+                      }
+                    ]
+                  }),
+                this.properties.layout === 'AspectRatio' &&
+                  this.properties.aspectratio === 'Custom' &&
+                  PropertyPaneTextField('width', {
+                    label: strings.WidthFieldLabel
+                  }),
+                this.properties.layout === 'AspectRatio' &&
+                  this.properties.aspectratio === 'Custom' &&
+                  PropertyPaneTextField('height', {
+                    label: strings.HeightFieldLabel
+                  })
               ]
             },
             {
@@ -233,7 +248,12 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
               groupFields: [
                 PropertyPaneHTML({
                   key: 'useDynamicProp',
-                  html: Text.format(strings.DynamicsPropsGroupDescription1, this.properties.dynamicPropName!== undefined ?this.properties.dynamicPropName:'parametername')
+                  html: Text.format(
+                    strings.DynamicsPropsGroupDescription1,
+                    this.properties.dynamicPropName !== undefined
+                      ? this.properties.dynamicPropName
+                      : 'parametername'
+                  )
                 }),
                 PropertyPaneHTML({
                   key: 'useDynamicProp',
@@ -243,26 +263,47 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
                   checked: this.properties.useDynamicProp === true,
                   label: strings.UseDynamicPropsFieldLabel
                 }),
-                this.properties.useDynamicProp === true && PropertyPaneDynamicFieldSet({
-                  label: strings.SelectDynamicSource,
-                  fields: [
-                    PropertyPaneDynamicField('dynamicProp', {
-                      label: strings.DynamicPropFieldLabel
-                    })
-                  ]
+                this.properties.useDynamicProp === true &&
+                  PropertyPaneDynamicFieldSet({
+                    label: strings.SelectDynamicSource,
+                    fields: [
+                      PropertyPaneDynamicField('dynamicProp', {
+                        label: strings.DynamicPropFieldLabel
+                      })
+                    ]
+                  }),
+                this.properties.useDynamicProp === true &&
+                  PropertyPaneTextField('dynamicPropName', {
+                    label: strings.DynamicPropsNameFieldLabel,
+                    description: strings.DynamicsPropNameDescriptionLabel,
+                    value: this.properties.dynamicPropName
+                  }),
+                PropertyPaneToggle('useDynamicProp2', {
+                  checked: this.properties.useDynamicProp2 === true,
+                  label: strings.UseDynamicPropsFieldLabel2
                 }),
-                this.properties.useDynamicProp === true && PropertyPaneTextField('dynamicPropName', {
-                  label: strings.DynamicPropsNameFieldLabel,
-                  description: strings.DynamicsPropNameDescriptionLabel,
-                  value: this.properties.dynamicPropName
-                })
+                this.properties.useDynamicProp2 === true &&
+                  PropertyPaneDynamicFieldSet({
+                    label: strings.SelectDynamicSource,
+                    fields: [
+                      PropertyPaneDynamicField('dynamicProp2', {
+                        label: strings.DynamicPropFieldLabel
+                      })
+                    ]
+                  }),
+                this.properties.useDynamicProp2 === true &&
+                  PropertyPaneTextField('dynamicPropName2', {
+                    label: strings.DynamicPropsNameFieldLabel,
+                    description: strings.DynamicsPropNameDescriptionLabel,
+                    value: this.properties.dynamicPropName2
+                  })
               ]
             },
             {
               groupName: strings.ThemeGroupName,
               isCollapsed: true,
               groupFields: [
-                PropertyPaneLabel('themeValuesPre',{
+                PropertyPaneLabel('themeValuesPre', {
                   text: strings.ThemeValuePreLabel
                 }),
                 PropertyFieldMultiSelect('themeValues', {
@@ -274,7 +315,16 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
                 PropertyPaneHTML({
                   key: 'themeValuesPost',
                   html: strings.ThemeValuePostLabel
-                }),
+                })
+              ]
+            },
+            {
+              groupName: strings.AboutGroup,
+              groupFields: [
+                PropertyPaneWebPartInformation({
+                  key: 'webPartInfoId',
+                  description: 'Version: ' + (<any>packageSolution).solution.version
+                })
               ]
             }
           ]
@@ -285,9 +335,12 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
 
   protected get propertiesMetadata(): IWebPartPropertiesMetadata {
     return {
-      // Specify the web part properties data type to allow the address
+      // Specify the web part properties data type to allow the
       // information to be serialized by the SharePoint Framework.
-      'dynamicProp': {
+      dynamicProp: {
+        dynamicPropertyType: 'string'
+      },
+      dynamicProp2: {
         dynamicPropertyType: 'string'
       }
     };
@@ -295,13 +348,13 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
 
   private _onConfigure = (): void => {
     this.context.propertyPane.open();
-  }
+  };
 
   /**
- * Update the current theme variant reference and re-render.
- *
- * @param args The new theme
- */
+   * Update the current theme variant reference and re-render.
+   *
+   * @param args The new theme
+   */
   private _handleThemeChangedEvent(args: ThemeChangedEventArgs): void {
     this._themeVariant = args.theme;
     this.render();

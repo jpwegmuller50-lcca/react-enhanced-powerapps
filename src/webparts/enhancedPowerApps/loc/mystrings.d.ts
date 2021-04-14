@@ -8,6 +8,7 @@ declare interface IEnhancedPowerAppsWebPartStrings {
   DynamicPropFieldLabel: string;
   SelectDynamicSource: string;
   UseDynamicPropsFieldLabel: string;
+  UseDynamicPropsFieldLabel2: string;
   DynamicsPropsGroupDescription2: string;
   DynamicsPropsGroupDescription1: string;
   DynamicPropertiesGroupLabel: string;
@@ -26,6 +27,7 @@ declare interface IEnhancedPowerAppsWebPartStrings {
   PropertyPaneDescription: string;
   BasicGroupName: string;
   AppWebLinkFieldLabel: string;
+  AboutGroup: string;
 }
 
 declare module 'EnhancedPowerAppsWebPartStrings' {
