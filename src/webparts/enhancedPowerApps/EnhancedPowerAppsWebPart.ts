@@ -8,6 +8,7 @@ import {
   PropertyPaneLabel,
   PropertyPaneChoiceGroup
 } from '@microsoft/sp-property-pane';
+import { PropertyPaneWebPartInformation } from '@pnp/spfx-property-controls/lib/PropertyPaneWebPartInformation';
 
 import * as strings from 'EnhancedPowerAppsWebPartStrings';
 import EnhancedPowerApps from './components/EnhancedPowerApps';
@@ -44,6 +45,9 @@ import { PropertyPaneHTML } from '../../controls/PropertyPaneHTML/PropertyPaneHT
  * Super-cool text functions included in SPFx that people don't use often enough
  */
 import { Text } from '@microsoft/sp-core-library';
+
+// Import package version
+const packageSolution: any = require('../../../config/package-solution.json');
 
 export interface IEnhancedPowerAppsWebPartProps {
   dynamicProp: DynamicProperty<string>;
@@ -313,6 +317,15 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
                   html: strings.ThemeValuePostLabel
                 })
               ]
+            },
+            {
+              groupName: strings.AboutGroup,
+              groupFields: [
+                PropertyPaneWebPartInformation({
+                  key: 'webPartInfoId',
+                  description: 'Version: ' + (<any>packageSolution).solution.version
+                })
+              ]
             }
           ]
         }
@@ -335,7 +348,7 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
 
   private _onConfigure = (): void => {
     this.context.propertyPane.open();
-  }
+  };
 
   /**
    * Update the current theme variant reference and re-render.

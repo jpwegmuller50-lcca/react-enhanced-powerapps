@@ -27,6 +27,7 @@ declare interface IEnhancedPowerAppsWebPartStrings {
   PropertyPaneDescription: string;
   BasicGroupName: string;
   AppWebLinkFieldLabel: string;
+  AboutGroup: string;
 }
 
 declare module 'EnhancedPowerAppsWebPartStrings' {

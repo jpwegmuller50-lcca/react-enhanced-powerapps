@@ -109,7 +109,7 @@ export default class EnhancedPowerApps extends React.Component<
                 scrolling="no"
                 allow="geolocation *; microphone *; camera *; fullscreen *;"
                 sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-forms allow-orientation-lock allow-downloads"
-                width={this.props.width}
+                width={width}
                 height={height}
                 frameBorder={border ? '1' : '0'}
               ></iframe>
