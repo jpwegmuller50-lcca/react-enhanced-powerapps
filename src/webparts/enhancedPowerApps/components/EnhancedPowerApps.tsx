@@ -86,7 +86,7 @@ export default class EnhancedPowerApps extends React.Component<
     }
 
     // Build the frame url
-    const frameUrl: string = `${appUrl}?source=SPClient-EnhancedPowerAppsWebPart&amp;locale=${locale}&amp;enableOnBehalfOf=true&amp;authMode=onbehalfof&amp;hideNavBar=true&amp;${dynamicPropValue}${dynamicProp2Value}${themeParams}`;
+    const frameUrl: string = `${appUrl}?source=SPClient-EnhancedPowerAppsWebPart&locale=${locale}&enableOnBehalfOf=true&authMode=onbehalfof&hideNavBar=true&__appurl=${encodeURIComponent(appUrl)}${dynamicPropValue}${dynamicProp2Value}${themeParams}`;
 
     console.log('URL', frameUrl);
 
