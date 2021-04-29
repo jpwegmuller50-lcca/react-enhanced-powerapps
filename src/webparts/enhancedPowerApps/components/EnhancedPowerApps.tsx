@@ -45,6 +45,9 @@ export default class EnhancedPowerApps extends React.Component<
     let propIsUrl: boolean = false;
     let prop2IsUrl: boolean = false;
 
+    console.log("dynamicProp1", dynamicProp);
+    console.log("dynamicProp2", dynamicProp2);
+
     // set app url by checking to see if either dynamic property is an app url
     const appUrlRoot: string = 'https://apps.powerapps.com/play/';
     if (useDynamicProp && dynamicProp !== undefined && dynamicProp.substr(0, 32) === appUrlRoot) {
