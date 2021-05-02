@@ -38,6 +38,16 @@ export interface IEnhancedPowerAppsProps {
   appWebLink: string;
 
   /**
+   * Whether appWebLink is dynamic
+   */
+  dynamicAppWebLink: boolean;
+
+  /**
+   * Html to display if dynamic app link is blank
+   */
+  noLinkHtml: string;
+
+  /**
    * Width
    */
   width: number;

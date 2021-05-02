@@ -39,6 +39,7 @@ import { ThemeProvider, ThemeChangedEventArgs, IReadonlyTheme } from '@microsoft
  * Use the multi-select for large checklists
  */
 import { PropertyFieldMultiSelect } from '@pnp/spfx-property-controls/lib/PropertyFieldMultiSelect';
+import { PropertyFieldCodeEditor, PropertyFieldCodeEditorLanguages } from '@pnp/spfx-property-controls/lib/PropertyFieldCodeEditor';
 import { ThemeVariantSlots } from './ThemeVariantSlots';
 import { PropertyPaneHTML } from '../../controls/PropertyPaneHTML/PropertyPaneHTML';
 
@@ -52,7 +53,9 @@ const packageSolution: any = require('../../../config/package-solution.json');
 
 export interface IEnhancedPowerAppsWebPartProps {
   dynamicProp: DynamicProperty<string>;
+  dynamicAppWebLink: boolean;
   appWebLink: DynamicProperty<string>;
+  noLinkHtml: string;
   useDynamicProp: boolean;
   dynamicPropName: string;
   useDynamicProp2: boolean;
@@ -138,7 +141,9 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
         useDynamicProp2: this.properties.useDynamicProp2,
         dynamicPropName2: this.properties.dynamicPropName2,
         onConfigure: this._onConfigure,
+        dynamicAppWebLink: !!this.properties.appWebLink.tryGetValue(),
         appWebLink: appWebLink,
+        noLinkHtml: this.properties.noLinkHtml,
         width: clientWidth,
         height: clientHeight,
         themeVariant: this._themeVariant,
@@ -170,7 +175,6 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
             {
               primaryGroup: {
                 groupName: strings.BasicGroupName,
-                isCollapsed: false,
                 groupFields: [
                   PropertyPaneTextField('appWebLink', {
                     label: strings.AppWebLinkFieldLabel
@@ -179,15 +183,17 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
               },
               secondaryGroup: {
                 groupName: strings.BasicGroupName,
-                isCollapsed: false,
                 groupFields: [
                   PropertyPaneDynamicFieldSet({
-                    label: 'App web link',
+                    label: strings.AppWebLinkFieldLabel,
                     fields: [
                       PropertyPaneDynamicField('appWebLink', {
-                        label: strings.AppWebLinkFieldLabel
+                        label: strings.AppWebLinkDynamicFieldLabel
                       })
                     ]
+                  }),
+                  PropertyPaneTextField('noLinkHtml', {
+                    label: strings.NoAppLinkFieldLabel,
                   })
                 ]
               },

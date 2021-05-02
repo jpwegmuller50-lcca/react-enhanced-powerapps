@@ -26,6 +26,8 @@ export const EnhancedPowerApps: React.FunctionComponent<IEnhancedPowerAppsProps>
     dynamicProp2,
     themeVariant,
     themeValues,
+    dynamicAppWebLink,
+    noLinkHtml,
     appWebLink,
     locale,
     border,
@@ -36,49 +38,38 @@ export const EnhancedPowerApps: React.FunctionComponent<IEnhancedPowerAppsProps>
   /* states */
   const [error, setError] = React.useState({ errorFlag: false, errorMsg: '' });
 
-  // The only thing we need for this web part to be configured is an app link or app id
-  const needConfiguration: boolean = !appWebLink;
+  // Only need configuration if set for manual web link and web link is blank
+  //  i.e. if getting dynamic web link and it's blank, that's ok.
+  const needConfiguration: boolean = !appWebLink && !dynamicAppWebLink;
+
+  const displayNoLinkHtml: boolean = !appWebLink && dynamicAppWebLink;
 
   const { semanticColors }: IReadonlyTheme = themeVariant;
 
-  /** process any dynamic properties */
+  // We can take an app id or a full link. We'll assume (for now) that people are passing a valid app URL
+  console.log('appWebLink', appWebLink);
   let appUrl: string = '';
-  let propIsUrl: boolean = false;
-  let prop2IsUrl: boolean = false;
 
-  console.log('dynamicProp1', dynamicProp);
-  console.log('dynamicProp2', dynamicProp2);
-
-  // set app url by checking to see if either dynamic property is an app url
-  const appUrlRoot: string = 'https://apps.powerapps.com/play/';
-  if (useDynamicProp && dynamicProp !== undefined && dynamicProp.substr(0, 32) === appUrlRoot) {
-    appUrl = dynamicProp;
-    propIsUrl = true;
-  } else if (
-    useDynamicProp2 &&
-    dynamicProp2 !== undefined &&
-    dynamicProp2.substr(0, 32) === appUrlRoot
-  ) {
-    appUrl = dynamicProp2;
-    prop2IsUrl = true;
-  } else {
-    // We can take an app id or a full link. We'll assume (for now) that people are passing a valid app URL
-    // would LOVE to find an API to retrieve list of valid apps
+  if (typeof appWebLink === 'string') {
     appUrl =
       appWebLink && appWebLink.indexOf('https://') != 0
         ? `https://apps.powerapps.com/play/${appWebLink}`
         : appWebLink;
   }
 
-  function setDynamicPropValue(propName: string, propValue: any): string {
-    return `&${encodeURIComponent(propName)}=${encodeURIComponent(propValue)}`;
-  }
+  /** process any dynamic properties */
+  console.log('dynamicProp', dynamicProp);
+  console.log('dynamicProp2', dynamicProp2);
+
+  const setDynamicPropValue = (propName: string, propValue: any): string =>
+    `&${encodeURIComponent(propName)}=${encodeURIComponent(propValue)}`;
+
   const dynamicPropValue: string =
-    useDynamicProp && !propIsUrl && dynamicProp !== undefined
+    useDynamicProp && dynamicProp !== undefined
       ? setDynamicPropValue(dynamicPropName, dynamicProp)
       : '';
   const dynamicProp2Value: string =
-    useDynamicProp2 && !prop2IsUrl && dynamicProp2 !== undefined
+    useDynamicProp2 && dynamicProp2 !== undefined
       ? setDynamicPropValue(dynamicPropName2, dynamicProp2)
       : '';
 
@@ -115,9 +106,16 @@ export const EnhancedPowerApps: React.FunctionComponent<IEnhancedPowerAppsProps>
             onConfigure={props.onConfigure}
           />
         )}
+        {displayNoLinkHtml && (
+          <Placeholder
+            iconName="PowerApps"
+            iconText={noLinkHtml}
+            description=''
+          />
+        )}
         {!needConfiguration && (
           <>
-            {props.appWebLink && (
+            {appWebLink && (
               <iframe
                 src={frameUrl}
                 scrolling="no"
