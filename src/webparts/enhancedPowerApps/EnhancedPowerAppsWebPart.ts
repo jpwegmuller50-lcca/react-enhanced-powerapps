@@ -11,7 +11,7 @@ import {
 import { PropertyPaneWebPartInformation } from '@pnp/spfx-property-controls/lib/PropertyPaneWebPartInformation';
 
 import * as strings from 'EnhancedPowerAppsWebPartStrings';
-import EnhancedPowerApps from './components/EnhancedPowerApps';
+import { EnhancedPowerApps } from './components/EnhancedPowerApps';
 import { IEnhancedPowerAppsProps } from './components/IEnhancedPowerAppsProps';
 
 /**
