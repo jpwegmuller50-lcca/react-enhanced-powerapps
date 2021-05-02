@@ -6,7 +6,8 @@ import {
   PropertyPaneTextField,
   PropertyPaneToggle,
   PropertyPaneLabel,
-  PropertyPaneChoiceGroup
+  PropertyPaneChoiceGroup,
+  IPropertyPaneConditionalGroup
 } from '@microsoft/sp-property-pane';
 import { PropertyPaneWebPartInformation } from '@pnp/spfx-property-controls/lib/PropertyPaneWebPartInformation';
 
@@ -51,7 +52,7 @@ const packageSolution: any = require('../../../config/package-solution.json');
 
 export interface IEnhancedPowerAppsWebPartProps {
   dynamicProp: DynamicProperty<string>;
-  appWebLink: string;
+  appWebLink: DynamicProperty<string>;
   useDynamicProp: boolean;
   dynamicPropName: string;
   useDynamicProp2: boolean;
@@ -84,6 +85,7 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
 
   public render(): void {
     // Context variables and dynamic properties
+    const appWebLink: string | undefined = this.properties.appWebLink.tryGetValue();
     const dynamicProp: string | undefined = this.properties.dynamicProp.tryGetValue();
     const dynamicProp2: string | undefined = this.properties.dynamicProp2.tryGetValue();
 
@@ -136,7 +138,7 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
         useDynamicProp2: this.properties.useDynamicProp2,
         dynamicPropName2: this.properties.dynamicPropName2,
         onConfigure: this._onConfigure,
-        appWebLink: this.properties.appWebLink,
+        appWebLink: appWebLink,
         width: clientWidth,
         height: clientHeight,
         themeVariant: this._themeVariant,
@@ -166,14 +168,33 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
           },
           groups: [
             {
-              groupName: strings.BasicGroupName,
-              isCollapsed: false,
-              groupFields: [
-                PropertyPaneTextField('appWebLink', {
-                  label: strings.AppWebLinkFieldLabel
-                })
-              ]
-            },
+              primaryGroup: {
+                groupName: strings.BasicGroupName,
+                isCollapsed: false,
+                groupFields: [
+                  PropertyPaneTextField('appWebLink', {
+                    label: strings.AppWebLinkFieldLabel
+                  })
+                ]
+              },
+              secondaryGroup: {
+                groupName: strings.BasicGroupName,
+                isCollapsed: false,
+                groupFields: [
+                  PropertyPaneDynamicFieldSet({
+                    label: 'App web link',
+                    fields: [
+                      PropertyPaneDynamicField('appWebLink', {
+                        label: strings.AppWebLinkFieldLabel
+                      })
+                    ]
+                  })
+                ]
+              },
+              // show secondary group if connected to dynamic data source
+              showSecondaryGroup: !!this.properties.appWebLink.tryGetSource()
+            } as IPropertyPaneConditionalGroup,
+
             {
               groupName: strings.AppearanceGroupName,
               isCollapsed: true,
@@ -337,6 +358,9 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
     return {
       // Specify the web part properties data type to allow the
       // information to be serialized by the SharePoint Framework.
+      appWebLink: {
+        dynamicPropertyType: 'string'
+      },
       dynamicProp: {
         dynamicPropertyType: 'string'
       },
