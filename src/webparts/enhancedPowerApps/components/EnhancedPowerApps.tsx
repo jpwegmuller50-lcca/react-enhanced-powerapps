@@ -31,7 +31,7 @@ export const EnhancedPowerApps: React.FunctionComponent<IEnhancedPowerAppsProps>
     border,
     height,
     width
-  } = this.props;
+  } = props;
 
   /* states */
   const [error, setError] = React.useState({ errorFlag: false, errorMsg: '' });
@@ -112,12 +112,12 @@ export const EnhancedPowerApps: React.FunctionComponent<IEnhancedPowerAppsProps>
             iconText={strings.PlaceholderIconText}
             description={strings.PlaceholderDescription}
             buttonLabel={strings.PlaceholderButtonLabel}
-            onConfigure={this.props.onConfigure}
+            onConfigure={props.onConfigure}
           />
         )}
         {!needConfiguration && (
           <>
-            {this.props.appWebLink && (
+            {props.appWebLink && (
               <iframe
                 src={frameUrl}
                 scrolling="no"
