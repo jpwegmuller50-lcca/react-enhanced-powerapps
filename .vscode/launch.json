@@ -25,7 +25,8 @@
       "name": "Hosted workbench",
       "type": "chrome",
       "request": "launch",
-      "url": "https://lcca.sharepoint.com/sites/jpdev/_layouts/workbench.aspx",
+      // "url": "https://lcca.sharepoint.com/sites/jpdev/_layouts/workbench.aspx",
+      "url": "https://wegmcdev.sharepoint.com/sites/infectionsurvtest/_layouts/workbench.aspx",
       "webRoot": "${workspaceRoot}",
       "sourceMaps": true,
       "sourceMapPathOverrides": {

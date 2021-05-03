@@ -13,84 +13,89 @@ import { Placeholder } from '@pnp/spfx-controls-react/lib/Placeholder';
  */
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import { IEnhancedPowerAppsState } from './IEnhancedPowerAppsState';
+import { ErrorBoundary } from '../../../common/errorBoundaryComp/ErrorBoundary';
 
-export default class EnhancedPowerApps extends React.Component<
-  IEnhancedPowerAppsProps,
-  IEnhancedPowerAppsState
-> {
-  public render(): React.ReactElement<IEnhancedPowerAppsProps> {
-    const {
-      useDynamicProp,
-      dynamicPropName,
-      dynamicProp,
-      useDynamicProp2,
-      dynamicPropName2,
-      dynamicProp2,
-      themeVariant,
-      themeValues,
-      appWebLink,
-      locale,
-      border,
-      height,
-      width
-    } = this.props;
+export const EnhancedPowerApps: React.FunctionComponent<IEnhancedPowerAppsProps> = (props) => {
+  /* props */
+  const {
+    useDynamicProp,
+    dynamicPropName,
+    dynamicProp,
+    useDynamicProp2,
+    dynamicPropName2,
+    dynamicProp2,
+    themeVariant,
+    themeValues,
+    dynamicAppWebLink,
+    noLinkHtml,
+    appWebLink,
+    locale,
+    border,
+    height,
+    width
+  } = props;
 
-    // The only thing we need for this web part to be configured is an app link or app id
-    const needConfiguration: boolean = !appWebLink;
+  /* states */
+  const [error, setError] = React.useState({ errorFlag: false, errorMsg: '' });
 
-    const { semanticColors }: IReadonlyTheme = themeVariant;
+  // Only need configuration if set for manual web link and web link is blank
+  //  i.e. if getting dynamic web link and it's blank, that's ok.
+  const needConfiguration: boolean = !appWebLink && !dynamicAppWebLink;
 
-    /** process any dynamic properties */
-    let appUrl: string = '';
-    let propIsUrl: boolean = false;
-    let prop2IsUrl: boolean = false;
+  const displayNoLinkHtml: boolean = !appWebLink && dynamicAppWebLink;
 
-    // set app url by checking to see if either dynamic property is an app url
-    const appUrlRoot: string = 'https://apps.powerapps.com/play/';
-    if (useDynamicProp && dynamicProp !== undefined && dynamicProp.substr(0, 32) === appUrlRoot) {
-      appUrl = dynamicProp;
-      propIsUrl = true;
-    } else if (useDynamicProp2 && dynamicProp2 !== undefined && dynamicProp2.substr(0, 32) === appUrlRoot) {
-      appUrl = dynamicProp2;
-      prop2IsUrl = true;
-    } else {
-      // We can take an app id or a full link. We'll assume (for now) that people are passing a valid app URL
-      // would LOVE to find an API to retrieve list of valid apps
-      appUrl =
-        appWebLink && appWebLink.indexOf('https://') != 0
-          ? `https://apps.powerapps.com/play/${appWebLink}`
-          : appWebLink;
-    }
+  const { semanticColors }: IReadonlyTheme = themeVariant;
 
-    const dynamicPropValue: string =
-      useDynamicProp && !propIsUrl && dynamicProp !== undefined
-        ? `&${encodeURIComponent(dynamicPropName)}=${encodeURIComponent(dynamicProp)}`
-        : '';
-    const dynamicProp2Value: string =
-      useDynamicProp2 && !prop2IsUrl && dynamicProp2 !== undefined
-        ? `&${encodeURIComponent(dynamicPropName2)}=${encodeURIComponent(dynamicProp2)}`
-        : '';
+  // We can take an app id or a full link. We'll assume (for now) that people are passing a valid app URL
+  console.log('appWebLink', appWebLink);
+  let appUrl: string = '';
 
-    // Build the portion of the URL where we're passing theme colors
-    let themeParams: string = '';
+  if (typeof appWebLink === 'string') {
+    appUrl =
+      appWebLink && appWebLink.indexOf('https://') != 0
+        ? `https://apps.powerapps.com/play/${appWebLink}`
+        : appWebLink;
+  }
 
-    if (themeValues && themeValues.length > 0) {
-      themeValues.forEach((themeValue: string) => {
-        try {
-          const themeColor: string = semanticColors[themeValue];
-          themeParams = themeParams + `&${themeValue}=${encodeURIComponent(themeColor)}`;
-        } catch (e) {
-          console.log(e);
-        }
-      });
-    }
+  /** process any dynamic properties */
+  console.log('dynamicProp', dynamicProp);
+  console.log('dynamicProp2', dynamicProp2);
 
-    // Build the frame url
-    const frameUrl: string = `${appUrl}?source=SPClient-EnhancedPowerAppsWebPart&amp;locale=${locale}&amp;enableOnBehalfOf=true&amp;authMode=onbehalfof&amp;hideNavBar=true&amp;${dynamicPropValue}${dynamicProp2Value}${themeParams}`;
+  const setDynamicPropValue = (propName: string, propValue: any): string =>
+    `&${encodeURIComponent(propName)}=${encodeURIComponent(propValue)}`;
 
-    console.log('URL', frameUrl);
+  const dynamicPropValue: string =
+    useDynamicProp && dynamicProp !== undefined
+      ? setDynamicPropValue(dynamicPropName, dynamicProp)
+      : '';
+  const dynamicProp2Value: string =
+    useDynamicProp2 && dynamicProp2 !== undefined
+      ? setDynamicPropValue(dynamicPropName2, dynamicProp2)
+      : '';
 
-    return (
+  // Build the portion of the URL where we're passing theme colors
+  let themeParams: string = '';
+
+  if (themeValues && themeValues.length > 0) {
+    themeValues.forEach((themeValue: string) => {
+      try {
+        const themeColor: string = semanticColors[themeValue];
+        themeParams = themeParams + `&${themeValue}=${encodeURIComponent(themeColor)}`;
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  }
+
+  // Build the frame url
+  const frameUrl: string = `${appUrl}?source=SPClient-EnhancedPowerAppsWebPart&locale=${locale}&enableOnBehalfOf=true&authMode=onbehalfof&hideNavBar=true&__appurl=${encodeURIComponent(
+    appUrl
+  )}${dynamicPropValue}${dynamicProp2Value}${themeParams}`;
+
+  console.log('URL', frameUrl);
+
+  return (
+    <ErrorBoundary>
       <div className={styles.enhancedPowerApps} style={{ height: `${height}px` }}>
         {needConfiguration && (
           <Placeholder
@@ -98,12 +103,19 @@ export default class EnhancedPowerApps extends React.Component<
             iconText={strings.PlaceholderIconText}
             description={strings.PlaceholderDescription}
             buttonLabel={strings.PlaceholderButtonLabel}
-            onConfigure={this.props.onConfigure}
+            onConfigure={props.onConfigure}
+          />
+        )}
+        {displayNoLinkHtml && (
+          <Placeholder
+            iconName="PowerApps"
+            iconText={noLinkHtml}
+            description=''
           />
         )}
         {!needConfiguration && (
           <>
-            {this.props.appWebLink && (
+            {appWebLink && (
               <iframe
                 src={frameUrl}
                 scrolling="no"
@@ -117,6 +129,6 @@ export default class EnhancedPowerApps extends React.Component<
           </>
         )}
       </div>
-    );
-  }
-}
+    </ErrorBoundary>
+  );
+};

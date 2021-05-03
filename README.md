@@ -28,13 +28,15 @@ You'll need at least one application in Power Apps that you wish to embed in Sha
 
 Solution|Author(s)
 --------|---------
-react-enhanced-powerapps | Hugo Bernier ([Tahoe Ninjas](http://tahoeninjas.blog/), [@bernierh](https://twitter.com/bernierh))
+react-enhanced-powerapps | Hugo Bernier ([Tahoe Ninjas](http://tahoeninjas.blog/), [@bernierh](https://twitter.com/bernierh)), JP Wegmuller
 
 ## Version history
 
 Version|Date|Comments
 -------|----|--------
 1.0|July 27, 2020|Initial release
+1.1|April 14, 2021| Added second dynamic property option
+1.2|May 2, 2021|Option to have app web link come from dynamic property. Added error handling.
 
 ## Disclaimer
 
@@ -58,6 +60,13 @@ Version|Date|Comments
 * Once your app is saved and published, go to make.powerapps.com and find the **App ID** by browsing to **Apps**, selecting the app you wish to embed (*select it*, don't *launch it*) and viewing **Details**
 * In the app details page, find the **Web link** or **App ID** and copy it.
 ![Add web link or app id](./assets/step1-5.png).
+  * It's also possible to set the app web link to get its value from a dynamic source (another web part on page)
+  * Click on the ellipsis and connect to a data source that has PowerApps web links.
+  
+  ![Dynamic app web link](./assets/dynamicAppLink.png)
+  * Alternate text can also be set if the app web link from the dynamic source is blank.
+
+  ![Alternate text](./assets/dynamicAppLinkAltText.png)
 * Add the **Enhanced Power Apps** web part to a page.
 * In the web part's property pane, paste the value you copied in the **App web link or ID** field.
 * In the **Appearance** group, select **Maintain aspect** for the **Resize behavior** and select the **Aspect ratio** that matches the application size you selected earlier
@@ -67,7 +76,7 @@ You can also use dynamic properties to pass values from another web part on the 
 
 ## Features
 
-This web part was created because the out-of-the-box Power Apps web part was missing some features that were important to me. 
+This web part was created because the out-of-the-box Power Apps web part was missing some features. 
 
 This Web Part illustrates the following concepts on top of the SharePoint Framework:
 

@@ -27,6 +27,8 @@ declare interface IEnhancedPowerAppsWebPartStrings {
   PropertyPaneDescription: string;
   BasicGroupName: string;
   AppWebLinkFieldLabel: string;
+  AppWebLinkDynamicFieldLabel: string;
+  NoAppLinkFieldLabel: string;
   AboutGroup: string;
 }
 
