@@ -141,7 +141,7 @@ export default class EnhancedPowerAppsWebPart extends BaseClientSideWebPart<IEnh
         useDynamicProp2: this.properties.useDynamicProp2,
         dynamicPropName2: this.properties.dynamicPropName2,
         onConfigure: this._onConfigure,
-        dynamicAppWebLink: !!this.properties.appWebLink.tryGetValue(),
+        dynamicAppWebLink: !!this.properties.appWebLink.tryGetSource(),
         appWebLink: appWebLink,
         noLinkHtml: this.properties.noLinkHtml,
         width: clientWidth,

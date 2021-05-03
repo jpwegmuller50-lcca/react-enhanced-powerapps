@@ -32,7 +32,7 @@ define([], function () {
     PlaceholderIconText: 'Enhanced Microsoft Power Apps',
     PropertyPaneDescription: 'Add a custom business app by pasting its web link or ID below.',
     BasicGroupName: 'Basic Configuration',
-    AppWebLinkFieldLabel: 'App web link or ID (enter manually or click on the ... to connect to another web part)',
+    AppWebLinkFieldLabel: 'App web link or ID (enter manually or click on the ellipsis above to get the link from another web part)',
     AppWebLinkDynamicFieldLabel: 'App web link',
     NoAppLinkFieldLabel: 'Text to display when the dynamic app web link is blank',
     AboutGroup: 'About'
