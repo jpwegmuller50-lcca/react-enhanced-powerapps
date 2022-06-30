@@ -107,11 +107,7 @@ export const EnhancedPowerApps: React.FunctionComponent<IEnhancedPowerAppsProps>
           />
         )}
         {displayNoLinkHtml && (
-          <Placeholder
-            iconName="PowerApps"
-            iconText={noLinkHtml}
-            description=''
-          />
+          <Placeholder iconName="PowerApps" iconText={noLinkHtml} description="" />
         )}
         {!needConfiguration && (
           <>
